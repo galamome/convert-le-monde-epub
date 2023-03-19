@@ -6,6 +6,7 @@ from lxml import etree
 import asyncio
 import os.path
 import aiofiles
+import aiohttp
 
 ######################################################
 # Constants
@@ -70,33 +71,31 @@ async def get_and_convert_le_monde_article(articleUrl, cookie):
     lastIndex = len(splittedUrl) - 1
     htmlFileName = f'{splittedUrl[lastIndex-3]}_{splittedUrl[lastIndex-2]}_{splittedUrl[lastIndex-1]}_{splittedUrl[lastIndex]}'
     nakedFileName = htmlFileName.split('.')[0]
-    a_request = urllib.request.Request(articleUrl)
 
-    a_request.add_header("Cookie", cookie)
-    with urllib.request.urlopen(a_request) as response:
-        content_char_set = response.headers.get_content_charset()
-        the_page =  response.read().decode(response.headers.get_content_charset())
+    headers={"Cookie": cookie}
+    if not os.path.exists(htmlFileName):
+        async with aiohttp.ClientSession(headers=headers) as session:
+            async with session.get(articleUrl) as response:
+                content_char_set = response.get_encoding()
+                the_page = await response.text()
 
-        # Replace attribute not allowed
-        # Attribute name "crossorigin" associated with an element type "link" must be followed by the ' = ' character. 
-        modified = the_page.replace(" crossorigin>", " crossorigin=\"anonymous\">")
+                # Replace attribute not allowed
+                # Attribute name "crossorigin" associated with an element type "link" must be followed by the ' = ' character. 
+                modified = the_page.replace(" crossorigin>", " crossorigin=\"anonymous\">")
 
-        parser = etree.HTMLParser()
-        tree = etree.parse(io.StringIO(modified), parser)
+                parser = etree.HTMLParser()
+                tree = etree.parse(io.StringIO(modified), parser)
 
-        # Remove all unnecessary elements from the HTML, based on XPath
-        tree = remove_unnecessary_elements(tree, TO_REMOVE_XPATHS)
+                # Remove all unnecessary elements from the HTML, based on XPath
+                tree = remove_unnecessary_elements(tree, TO_REMOVE_XPATHS)
 
-        without_script = etree.tostring(tree.getroot(), encoding='UTF-8')
+                without_script = etree.tostring(tree.getroot(), encoding='UTF-8')
 
-        # Write file
-        if not os.path.exists(htmlFileName):
-            async with aiofiles.open(htmlFileName, "wb") as text_file:
-                await text_file.write(without_script)
-                return nakedFileName
-        else:
-            print(f'File {htmlFileName} already exists, and will NOT be written')
-    return ""
+                # Write file
+                async with aiofiles.open(htmlFileName, "wb") as text_file:
+                    await text_file.write(without_script)
+    else:
+        print(f'File {htmlFileName} already exists, and will NOT be written')
 
 def convert(nakedFileName):
     # Write file
