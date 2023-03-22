@@ -1,29 +1,31 @@
 # https://gist.github.com/pansapiens/110431456e8a4ba4f2eb
 
-# Example : python3 Standalone_HTML.py Desktop/index.html Desktop/index_standalone.html
-
 #!/usr/bin/env python
 # A simple script to suck up HTML, convert any images to inline Base64
 # encoded format and write out the converted file.
 #
-# Usage: python standalone_html.py <input_file.html> <output_file.html>
-#
-# TODO: Consider MHTML format: https://en.wikipedia.org/wiki/MHTML
+# Usage: python Standalone_HTML.py <input_file.html> <output_file.html>
 
 import os
 from bs4 import BeautifulSoup
 
 
-def guess_type(filepath):
+def guess_type(filepath: str) -> str:
     """
     Return the mimetype of a file, given it's path.
     This is a wrapper around two alternative methods - Unix 'file'-style
     magic which guesses the type based on file content (if available),
     and simple guessing based on the file extension (eg .jpg).
-    :param filepath: Path to the file.
-    :type filepath: str
-    :return: Mimetype string.
-    :rtype: str
+
+    Parameters
+    ----------
+    filepath: str
+        Path to the file.
+
+    Returns
+    -------
+    mimetype: str
+        Mimetype string.
     """
     try:
         import magic  # python-magic
@@ -32,13 +34,19 @@ def guess_type(filepath):
         import mimetypes
         return mimetypes.guess_type(filepath)[0]
 
-def file_to_base64(filepath):
+def file_to_base64(filepath: str) -> str:
     """
     Returns the content of a file as a Base64 encoded string.
-    :param filepath: Path to the file.
-    :type filepath: str
-    :return: The file content, Base64 encoded.
-    :rtype: str
+
+    Parameters
+    ----------
+    filepath: str
+        Path to the file.
+
+    Returns
+    -------
+    fileContent: str
+        The file content, Base64 encoded.
     """
     import base64
     with open(filepath, 'rb') as f:
