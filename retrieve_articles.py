@@ -94,7 +94,7 @@ myCookie = "lmd_gdpr_token=1; atauthority=%7B%22name%22%3A%22atauthority%22%2C%2
 
 
 async def main():
-    f = open("Articles_fevrier.txt", "r")
+    f = open("Articles.txt", "r")
     urls = set([])
     for line in f.readlines():
         if "https://www.lemonde.fr/" in line:

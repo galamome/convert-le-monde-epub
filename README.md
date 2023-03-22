@@ -13,7 +13,7 @@ python3 -m venv venv
 ### Activate the virtualenv (OS X & Linux)
 
 ```
-source project_env/bin/activate
+source venv/bin/activate
 ```
 
 ### Geler la configuration
@@ -22,7 +22,7 @@ source project_env/bin/activate
 pip freeze > requirements.txt
 ```
 
-### Charger une configuration existente
+### Charger une configuration existante
 
 ```
 pip install -r requirements.txt
