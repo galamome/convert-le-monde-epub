@@ -41,6 +41,7 @@ python ./retrieve_articles.py --articleFile article.txt --cookie "lmd_gdpr_token
 ## Lancer le script de conversion en ePUB (nécessite Pandoc)
 
 ```bash
+python convert.py
 ```
 
 
