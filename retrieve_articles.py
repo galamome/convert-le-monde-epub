@@ -28,6 +28,7 @@ TO_REMOVE_XPATHS = ['//title',
                     "//section[@id='js-capping']",
                     "//section[@id='js-capping-old-article']",
                     "//div[@class='Header__nav-container']",
+                    "//div[@class='article__gift-modal__title']"
                     "//div[@id='Header']",
                     "//div[@id='cover']",
                     "//div[@id='dfp-habillage']",
@@ -38,10 +39,21 @@ TO_REMOVE_XPATHS = ['//title',
                     "//div[@id='overlay']",
                     "//section[@class='inread inread--NL js-services-inread']",
                     "//div[@class='inread__headline']",
+                    "//div[@class='catcher__content']",
+                    "//div[@class='catcher__favorite']",
                     "//span[@class='sr-only']",
                     "//section[@class='paywall js-paywall paywall--longform paywall--abo']",
                     "//div[@class='lmd-dropdown__overlay']",
-                    "//ul[@class='meta meta__social  meta__social--opinion old__meta-social meta__social--gift']"
+                    "//ul[@class='meta meta__social  meta__social--opinion old__meta-social meta__social--gift']",
+                    "//button[@aria-label='Ajouter à vos sélections']",
+                    "//h3[@class='footer__category-title']",
+                    "//footer[@class='footer footer--abo']",
+                    "//ul[@class='footer__links']",
+                    "//section[@class='services-carousel']",
+                    "//div[@id='Header']",
+                    "//div[@id='js-modal-gifted-url']",
+                    "//p[@class='article__status']",
+                    "//ul[@class='meta meta__social   meta__social--gift']"
                     #,"//span[@class='meta__article-en-fr-url-link'", "//span[@class='icon__premium'"
                     ]
 
