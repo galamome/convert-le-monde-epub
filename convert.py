@@ -35,9 +35,11 @@ def convert(nakedFileName):
     # Write file
     epubFileName = f'{nakedFileName}.epub'
     htmlFileName = f'{nakedFileName}.html'
+    yearMonth = f'{nakedFileName[:4]}_{nakedFileName[4:6]}'
+    author = f'Le Monde {yearMonth}'
     if not os.path.isfile(epubFileName):
         # Prepare the command to run "pandoc"
-        command_to_convert_to_epub = f'pandoc -f html -t epub2 -o ./epub/{epubFileName} {htmlFileName} --metadata title={nakedFileName} --metadata author="Le Monde"'
+        command_to_convert_to_epub = f'pandoc -f html -t epub2 -o ./epub/{epubFileName} {htmlFileName} --metadata title={nakedFileName} --metadata author="{author}"'
 
         return command_to_convert_to_epub
     else:
