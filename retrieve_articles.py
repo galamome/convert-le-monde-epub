@@ -130,6 +130,31 @@ def repair_image_elements(xml_tree: etree._ElementTree) -> etree._ElementTree:
         #print(f'Content of img element is {s.attrib}')
     return xml_tree
 
+def retrieve_permanent_url(xml_tree: etree._ElementTree) -> etree._ElementTree:
+    """
+    Return the tree modified, with a new 'h2' node containing the URL
+    retrieved from the <meta property="og:url" content
+
+    Parameters:
+    -----------
+    xml_tree: etree._ElementTree
+        the tree in input
+
+    Returns:
+    --------
+    tree: etree._ElementTree
+        the tree modified.
+    """
+    for node in xml_tree.xpath("//meta[@property='og:url']"):
+        if 'content' in node.attrib:
+            #print(f'URL extracted from content attribute was {node.attrib["content"]}')
+            body = xml_tree.find(".//body")
+            newNode = etree.Element('h2')
+            newNode.text = node.attrib["content"]
+            body.insert(0, newNode)
+            
+    return xml_tree
+
 async def get_and_convert_le_monde_article(articleUrl, cookie):
     splittedUrl = articleUrl.split('/')
 
@@ -162,6 +187,8 @@ async def get_and_convert_le_monde_article(articleUrl, cookie):
 
                 # Repair image reference (replace data-srcset & data-sizes in "img" element)
                 tree = repair_image_elements(tree)
+
+                tree = retrieve_permanent_url(tree)
 
                 without_script = etree.tostring(tree.getroot(), encoding='unicode', method='xml')
 
